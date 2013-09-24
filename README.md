@@ -8,7 +8,7 @@ To set up, you must enter one or more lookup directory paths into the workflow's
 
 [Download](https://raw.github.com/mwaterfall/alfred-quick-ref/master/quick-ref.alfredworkflow)
 
-[Alfred Forum Topic](http://www.alfredforum.com/topic/.../)
+[Alfred Forum Topic](http://www.alfredforum.com/topic/3153-quick-ref-quickly-reference-files-eg-cheat-sheets-using-quick-look/)
 
 ![Screenshot](https://raw.github.com/mwaterfall/alfred-quick-ref/master/screenshot-1.png)
 ![Screenshot](https://raw.github.com/mwaterfall/alfred-quick-ref/master/screenshot-2.png)
