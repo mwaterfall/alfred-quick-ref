@@ -6,32 +6,35 @@ import alfred
 
 def process(query_str):
     """ Entry point """
-    if query_str:
-        results = get_results(query_str)
-        if results is not None:
-            response = alfred_items_for_results(results)
-            xml = alfred.xml(response)  # compiles the XML answer
-            alfred.write(xml)  # writes the XML back to Alfred
+    results = get_results(query_str)
+    if results is not None:
+        response = alfred_items_for_results(results)
+        xml = alfred.xml(response)  # compiles the XML answer
+        alfred.write(xml)  # writes the XML back to Alfred
 
 
 def get_results(query_str):
     """ Return value for the query string """
     results = []
     query_parts = query_str.split(' ')
-    for root, subFolders, files in os.walk(lookup_dir):
-        for file in files:
-            if file.startswith('.'):
-                continue  # exclude hidden files
-            hit = False
-            full_path = os.path.join(root, file)
-            # Search path (excluding lookup_dir) and filename
-            search_path = full_path[len(lookup_dir):]
-            for qp in query_parts:
-                if qp.lower() in search_path.lower():
+    for lookup_dir in lookup_dirs:
+        for root, subFolders, files in os.walk(lookup_dir):
+            for file in files:
+                if file.startswith('.'):
+                    continue  # exclude hidden files
+                full_path = os.path.join(root, file)
+                hit = False
+                if not query_str:
                     hit = True
-                    break
-            if hit:
-                results.append(full_path)
+                else:
+                    # Search path (excluding lookup_dir) and filename
+                    search_path = full_path[len(lookup_dir):]
+                    for qp in query_parts:
+                        if qp.lower() in search_path.lower():
+                            hit = True
+                            break
+                if hit:
+                    results.append(full_path)
     return results
 
 
@@ -76,10 +79,18 @@ def display_message(message, subtitle=None):
 
 
 if __name__ == "__main__":
-    lookup_dir = alfred.args()[0]
-    lookup_dir = os.path.expanduser(lookup_dir)  # expand ~ if we can
-    if not os.path.isdir(lookup_dir):
-        display_message('Invalid lookup directory. Please edit in '
-                        'workflow script filter.')
+
+    # Get lookup dirs and split by :
+    lookup_dirs = []
+    for ld in alfred.args()[0].split(':'):
+        if ld:
+            ld = os.path.expanduser(ld)  # expand ~ for home if we can
+            if os.path.isdir(ld):
+                lookup_dirs.append(ld)
+    if not lookup_dirs:
+        display_message('No valid lookup directories. Please edit in '
+                        'the workflow script filter.')
+
+    # Run
     query_str = alfred.args()[1]
     process(query_str)

@@ -50,7 +50,7 @@ call(["qlmanage", "-p", "{query}"])</string>
 			<key>config</key>
 			<dict>
 				<key>argumenttype</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>escaping</key>
 				<integer>36</integer>
 				<key>keyword</key>
@@ -60,6 +60,7 @@ call(["qlmanage", "-p", "{query}"])</string>
 				<key>script</key>
 				<string># Please specify the directory to search for documents.
 # You can nest documents in folders.
+# Add multiple paths by seperating with a colon (:)
 LOOKUP_DIR="~/Dropbox/Personal Sync/Cheat Sheets"
 
 python process.py "$LOOKUP_DIR" "{query}"</string>
