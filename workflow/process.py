@@ -84,6 +84,7 @@ if __name__ == "__main__":
     lookup_dirs = []
     for ld in alfred.args()[0].split(':'):
         if ld:
+            ld = ld.strip()
             ld = os.path.expanduser(ld)  # expand ~ for home if we can
             if os.path.isdir(ld):
                 lookup_dirs.append(ld)
