@@ -16,22 +16,21 @@ def process(query_str):
 def get_results(query_str):
     """ Return value for the query string """
     results = []
-    query_parts = query_str.split(' ')
     for lookup_dir in lookup_dirs:
         for root, subFolders, files in os.walk(lookup_dir):
             for file in files:
                 if file.startswith('.'):
                     continue  # exclude hidden files
                 full_path = os.path.join(root, file)
-                hit = False
-                if not query_str:
-                    hit = True
-                else:
+                hit = True
+                if query_str:
                     # Search path (excluding lookup_dir) and filename
                     search_path = full_path[len(lookup_dir):]
-                    for qp in query_parts:
-                        if qp.lower() in search_path.lower():
-                            hit = True
+                    # Break search into keywords and ensure each is a match
+                    for qp in query_str.split():
+                        if qp.lower() not in search_path.lower():
+                            # Search part not a match so exclude
+                            hit = False
                             break
                 if hit:
                     results.append(full_path)
@@ -93,5 +92,5 @@ if __name__ == "__main__":
                         'the workflow script filter.')
 
     # Run
-    query_str = alfred.args()[1]
+    query_str = alfred.args()[1].strip()
     process(query_str)
