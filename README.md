@@ -1,10 +1,7 @@
 alfred-quick-ref
 ================================
 
-Alfred 2 workflow for quickly referencing files (e.g. cheat sheets) using quick look
-
-To set up, you must enter one or more lookup directory paths into the workflow's script filter. Files can be nested in further directories.
-
+Alfred 2 workflow for quickly referencing files (e.g. cheat sheets, PDFs, web links, etc) using quick look.
 
 [Download](https://github.com/mwaterfall/alfred-quick-ref/raw/master/quick-ref.alfredworkflow)
 
@@ -12,3 +9,4 @@ To set up, you must enter one or more lookup directory paths into the workflow's
 
 ![Screenshot](https://raw.github.com/mwaterfall/alfred-quick-ref/master/screenshot-1.png)
 ![Screenshot](https://raw.github.com/mwaterfall/alfred-quick-ref/master/screenshot-2.png)
+![Screenshot](https://raw.github.com/mwaterfall/alfred-quick-ref/master/screenshot-3.png)

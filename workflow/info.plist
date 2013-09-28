@@ -34,10 +34,14 @@
 				<key>escaping</key>
 				<integer>36</integer>
 				<key>script</key>
-				<string>from subprocess import call
-call(["qlmanage", "-p", "{query}"])</string>
+				<string>if [ "{query}" == "!setup" ]; then
+	python process.py run_setup
+else
+    open ./QuickRefQL.app --args "{query}"
+fi
+</string>
 				<key>type</key>
-				<integer>3</integer>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
@@ -58,12 +62,7 @@ call(["qlmanage", "-p", "{query}"])</string>
 				<key>runningsubtext</key>
 				<string>Searching...</string>
 				<key>script</key>
-				<string># Please specify the directory to search for documents.
-# You can nest documents in folders.
-# Add multiple paths by seperating with a colon (:)
-LOOKUP_DIR="~/Dropbox/Personal Sync/Cheat Sheets"
-
-python process.py "$LOOKUP_DIR" "{query}"</string>
+				<string>python process.py query "{query}"</string>
 				<key>title</key>
 				<string>Quick reference documents</string>
 				<key>type</key>
@@ -86,12 +85,12 @@ python process.py "$LOOKUP_DIR" "{query}"</string>
 		<key>2C99F6F1-EF16-4CF1-9762-5D05A1FFAA4D</key>
 		<dict>
 			<key>ypos</key>
-			<real>60</real>
+			<real>40</real>
 		</dict>
 		<key>F17B9D36-71DE-49A3-8DCB-BAB66ED5C067</key>
 		<dict>
 			<key>ypos</key>
-			<real>60</real>
+			<real>40</real>
 		</dict>
 	</dict>
 	<key>webaddress</key>
