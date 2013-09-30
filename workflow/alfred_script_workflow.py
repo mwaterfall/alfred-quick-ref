@@ -11,6 +11,7 @@ config_filename = 'config.json'
 class AlfredScriptWorkflow(object):
 
     def __init__(self):
+        """ Setup """
 
         # Read bundle info and config path
         self.bundle_id = plistlib.readPlist(
@@ -72,7 +73,7 @@ class AlfredScriptWorkflow(object):
                 self.process(query_str)
 
     def read_config(self, data):
-        """ Read data from the json file and parse into `config` """
+        """ Read config data and parse into `config` """
         raise NotImplementedError()
 
     def process(self, query_str):
@@ -83,7 +84,7 @@ class AlfredScriptWorkflow(object):
             alfred.write(xml)  # writes the XML back to Alfred
 
     def get_items_for_query(self, query_str):
-        """ Return value for the query string """
+        """ Return items for the query string """
         raise NotImplementedError()
 
     def display_message(self, message, subtitle=None, arg=None):
