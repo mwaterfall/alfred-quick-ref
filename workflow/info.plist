@@ -17,6 +17,58 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>44E40430-68DB-4DD7-AB25-C203559CF8EF</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>75358899-EE4E-41AE-9096-315FF2958E5C</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string>Remove this folder</string>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>59035B9C-1D98-4E0A-B8F0-CD7FECF700BB</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>4FA98FAB-EFE3-49F3-A35E-1AEABB579ED7</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>CA6DD936-44FD-402B-999A-20E88E124130</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>75358899-EE4E-41AE-9096-315FF2958E5C</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>C5F9C31F-F721-4D51-8009-46CC5F5BDDA1</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>CA6DD936-44FD-402B-999A-20E88E124130</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>C5F9C31F-F721-4D51-8009-46CC5F5BDDA1</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 	</dict>
 	<key>createdby</key>
 	<string>Michael Waterfall</string>
@@ -32,13 +84,10 @@
 			<key>config</key>
 			<dict>
 				<key>escaping</key>
-				<integer>36</integer>
+				<integer>102</integer>
 				<key>script</key>
-				<string>if [ "{query}" == "!config" ]; then
-	python process.py run_config
-else
-    open ./QuickRefQL.app --args "{query}"
-fi
+				<string>open ./QuickRefQL.app --args "{query}"
+
 </string>
 				<key>type</key>
 				<integer>0</integer>
@@ -62,7 +111,7 @@ fi
 				<key>runningsubtext</key>
 				<string>Searching...</string>
 				<key>script</key>
-				<string>python process.py query "{query}"</string>
+				<string>python process.py "{query}"</string>
 				<key>title</key>
 				<string>Quick reference documents</string>
 				<key>type</key>
@@ -77,6 +126,123 @@ fi
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>qrfolders</string>
+				<key>runningsubtext</key>
+				<string>Loading folder list…</string>
+				<key>script</key>
+				<string>python process.py --list</string>
+				<key>subtext</key>
+				<string>View/edit your configured Quick Ref folders</string>
+				<key>title</key>
+				<string>List Quick Ref Folders</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>44E40430-68DB-4DD7-AB25-C203559CF8EF</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Quick Ref</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>C5F9C31F-F721-4D51-8009-46CC5F5BDDA1</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>python process.py --del "{query}"</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>75358899-EE4E-41AE-9096-315FF2958E5C</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict/>
+			<key>type</key>
+			<string>alfred.workflow.action.openfile</string>
+			<key>uid</key>
+			<string>59035B9C-1D98-4E0A-B8F0-CD7FECF700BB</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>python process.py --add "{query}"</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>CA6DD936-44FD-402B-999A-20E88E124130</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>acceptsmulti</key>
+				<false/>
+				<key>filetypes</key>
+				<array>
+					<string>public.folder</string>
+				</array>
+				<key>name</key>
+				<string>Add QR Folder</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.action</string>
+			<key>uid</key>
+			<string>4FA98FAB-EFE3-49F3-A35E-1AEABB579ED7</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
@@ -86,6 +252,36 @@ fi
 		<dict>
 			<key>ypos</key>
 			<real>40</real>
+		</dict>
+		<key>44E40430-68DB-4DD7-AB25-C203559CF8EF</key>
+		<dict>
+			<key>ypos</key>
+			<real>160</real>
+		</dict>
+		<key>4FA98FAB-EFE3-49F3-A35E-1AEABB579ED7</key>
+		<dict>
+			<key>ypos</key>
+			<real>400</real>
+		</dict>
+		<key>59035B9C-1D98-4E0A-B8F0-CD7FECF700BB</key>
+		<dict>
+			<key>ypos</key>
+			<real>280</real>
+		</dict>
+		<key>75358899-EE4E-41AE-9096-315FF2958E5C</key>
+		<dict>
+			<key>ypos</key>
+			<real>160</real>
+		</dict>
+		<key>C5F9C31F-F721-4D51-8009-46CC5F5BDDA1</key>
+		<dict>
+			<key>ypos</key>
+			<real>160</real>
+		</dict>
+		<key>CA6DD936-44FD-402B-999A-20E88E124130</key>
+		<dict>
+			<key>ypos</key>
+			<real>400</real>
 		</dict>
 		<key>F17B9D36-71DE-49A3-8DCB-BAB66ED5C067</key>
 		<dict>
