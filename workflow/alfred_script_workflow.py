@@ -1,67 +1,51 @@
 import os
 import json
 import alfred
-import plistlib
 from subprocess import call
 
-alfred_config_path = '~/Library/Application Support/Alfred 2/Workflow Data/'
+
 config_filename = 'config.json'
 
 
 class AlfredScriptWorkflow(object):
 
+    max_results = 9
+
     def __init__(self):
         """ Setup """
 
         # Read bundle info and config path
-        self.bundle_id = plistlib.readPlist(
-            os.path.abspath('./info.plist'))['bundleid']
         self.placeholder = ''
-        for x in plistlib.readPlist(
-                os.path.abspath('./info.plist'))['objects']:
+        for x in alfred.preferences['objects']:
             if x['type'] == 'alfred.workflow.input.scriptfilter':
                 self.placeholder = x['config']['title']
-        self.config_path = '%s/%s/' % (
-            os.path.expanduser(alfred_config_path).rstrip('/'),
-            self.bundle_id,
-        )
+        self.config_path = os.path.join(alfred.work(False), config_filename)
 
         # Handle init
         if alfred.args()[0] == 'run_config':
 
-            # Create config if doesn't exist and then open in textedit
-            try:
-                os.makedirs(self.config_path)
-            except OSError:
-                # Exists
-                pass
-            if not os.path.exists(self.config_path + config_filename):
-                config_file = open(self.config_path + config_filename, 'w')
-                # dump default config
-                config_file.write(json.dumps(self.config, indent=4))
-                config_file.close()
-            call(['open', '-a', 'TextEdit',
-                  self.config_path + config_filename])
+            if not os.path.exists(self.config_path):
+                with open(self.config_path, 'wb') as file:
+                    # dump default config
+                    json.dump(self.config, file, indent=4)
+
+            call(['open', self.config_path])
 
         else:
-
+            if not os.path.exists(self.config_path):
+                return self.display_config_prompt()
             # Read existing config
-            config_file = None
             try:
-                config_file = open(self.config_path + config_filename, 'r')
-                config_data = json.loads(''.join(config_file.readlines()))
-            except IOError:
-                self.display_config_prompt()  # Config file doesnt exist
+                with open(self.config_path, 'rb') as file:
+                    config_data = json.load(file)
             except ValueError:
-                self.display_config_prompt('Invalid configuration',
-                                     'Config contains invalid JSON')
-            finally:
-                if config_file:
-                    config_file.close()
+                return self.display_config_prompt(
+                    'Invalid configuration',
+                    'Config contains invalid JSON')
             try:
                 self.read_config(config_data)
             except (ValueError, TypeError):
-                self.display_config_prompt('Invalid configuration')
+                return self.display_config_prompt('Invalid configuration')
 
             # Get query
             query_str = alfred.args()[1].strip()
@@ -80,7 +64,8 @@ class AlfredScriptWorkflow(object):
         """ Entry point """
         results = self.get_items_for_query(query_str)
         if results:
-            xml = alfred.xml(results)  # compiles the XML answer
+            xml = alfred.xml(results,
+                             self.max_results)  # compiles the XML answer
             alfred.write(xml)  # writes the XML back to Alfred
 
     def get_items_for_query(self, query_str):
@@ -104,7 +89,6 @@ class AlfredScriptWorkflow(object):
             )
         ])   # compiles the XML answer
         alfred.write(xml)  # writes the XML back to Alfred
-        exit()
 
     def display_config_prompt(self, message=None, reason=None,
                               append_config_message=True):

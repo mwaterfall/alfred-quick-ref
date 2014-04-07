@@ -7,6 +7,8 @@ from alfred_script_workflow import AlfredScriptWorkflow
 
 class QuickRefAlfredScriptWorkflow(AlfredScriptWorkflow):
 
+    max_results = 50
+
     def __init__(self):
         """ Setup """
 
@@ -25,16 +27,14 @@ class QuickRefAlfredScriptWorkflow(AlfredScriptWorkflow):
         """ Read config data and parse into `config` """
 
         # Lookup dirs (expand and unique)
-        lookup_dirs = {}
-        for ld in data['lookup_dirs']:
-            if ld:
-                # expand ~ for home if we can
-                ld = os.path.expanduser(ld.strip())
-                if os.path.isdir(ld):
-                    lookup_dirs[ld] = None
-        if not lookup_dirs.keys():
-            self.display_config_prompt('No valid lookup directories')
-        self.config['lookup_dirs'] = lookup_dirs.keys()
+        lookup_dirs = set()
+        for dirpath in [os.path.expanduser(p.strip()) for p in
+                        data.get('lookup_dirs', [])]:
+            if os.path.isdir(dirpath):
+                    lookup_dirs.add(dirpath)
+        if not lookup_dirs:
+            return self.display_config_prompt('No valid lookup directories')
+        self.config['lookup_dirs'] = sorted(lookup_dirs)
 
     def get_items_for_query(self, query_str):
         """ Return items for the query string """
@@ -42,11 +42,11 @@ class QuickRefAlfredScriptWorkflow(AlfredScriptWorkflow):
         # Process
         results = []
         for lookup_dir in self.config['lookup_dirs']:
-            for root, subFolders, files in os.walk(lookup_dir):
-                for file in files:
-                    if file.startswith('.'):
+            for root, dirnames, filenames in os.walk(lookup_dir):
+                for filename in filenames:
+                    if filename.startswith('.'):
                         continue  # exclude hidden files
-                    full_path = os.path.join(root, file)
+                    full_path = os.path.join(root, filename)
                     hit = True
                     if query_str:
                         # Search path (excluding lookup_dir) and filename
@@ -61,15 +61,14 @@ class QuickRefAlfredScriptWorkflow(AlfredScriptWorkflow):
                     if hit:
                         results.append(full_path)
         if not results:
-            self.display_config_prompt(
+            return self.display_config_prompt(
                 'No documents found',
                 'Press return to modify configuration',
                 append_config_message=False)
 
         # Create alfred items
         items = []
-        index = 0
-        for result in results:
+        for index, result in enumerate(results):
             path, filename = os.path.split(result)
             items.append(alfred.Item(
                 title=os.path.splitext(filename)[0],
@@ -78,9 +77,8 @@ class QuickRefAlfredScriptWorkflow(AlfredScriptWorkflow):
                     'uid': alfred.uid(index),
                     'arg': result,
                 },
-                icon='icon.png',
+                icon=(result, {'type': 'fileicon'})
             ))
-            index += 1
         return items
 
 

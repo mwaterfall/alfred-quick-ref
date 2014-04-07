@@ -34,8 +34,8 @@
 				<key>escaping</key>
 				<integer>36</integer>
 				<key>script</key>
-				<string>if [ "{query}" == "!setup" ]; then
-	python process.py run_setup
+				<string>if [ "{query}" == "!config" ]; then
+	python process.py run_config
 else
     open ./QuickRefQL.app --args "{query}"
 fi
