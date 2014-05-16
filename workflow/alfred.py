@@ -45,9 +45,9 @@ class Item(object):
             value = getattr(self, attribute)
             if value is None:
                 continue
-            try:
+            if len(value) == 2 and isinstance(value[1], dict):
                 (value, attributes) = value
-            except:
+            else:
                 attributes = {}
             SubElement(item, attribute, self.unicode(attributes)).text = unicode(value)
         return item
@@ -59,7 +59,7 @@ def config():
     return _create('config')
 
 def decode(s):
-    return unicodedata.normalize('NFC', s.decode('utf-8'))
+    return unicodedata.normalize('NFD', s.decode('utf-8'))
 
 def uid(uid):
     return u'-'.join(map(unicode, (bundleid, uid)))
